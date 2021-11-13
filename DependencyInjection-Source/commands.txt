@@ -1,0 +1,18 @@
+C# Dependency Injection Explanation in .NET Core
+https://youtu.be/2rv-lcqW1tM
+
+
+dotnet new sln
+dotnet new classlib -o DependencyLibrary
+dotnet sln add DependencyLibrary/DependencyLibrary.csproj
+dotnet new console -o DependencyApp
+dotnet sln add DependencyApp/DependencyApp.csproj
+dotnet add DependencyApp/DependencyApp.csproj reference DependencyLibrary/DependencyLibrary.csproj
+
+dotnet build
+dotnet run --project DependencyApp/DependencyApp.csproj
+
+dotnet new mstest -o DependencyLibraryTest
+dotnet sln add DependencyLibraryTest/DependencyLibraryTest.csproj
+dotnet add DependencyLibraryTest/DependencyLibraryTest.csproj reference DependencyLibrary/DependencyLibrary.csproj
+
