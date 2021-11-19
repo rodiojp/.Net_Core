@@ -25,22 +25,20 @@
 - `Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Data"`
 - `Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 5.0.12 -ProjectName "MyMusic.Data"`
 - `Install-Package Microsoft.EntityFrameworkCore.Tools -Version 5.0.12 -ProjectName "MyMusic.Data"`
-
-
-`Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Api"`
+- `Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Api"`
 
 
 Add-Migration InitialCreate -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations
 
-<dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add InitialModel -p MyMusic.Data/MyMusic.Data.csproj>
+<!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add InitialModel -p MyMusic.Data/MyMusic.Data.csproj-->
 
 Update-Database -StartupProject MyMusic.Api
 
-<dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj database update>
+<!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj database update-->
 
 Add-Migration SeedMusicsAndArtistsTable -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations
 
-<dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add SeedMusicsAndArtistsTable -p MyMusic.Data/MyMusic.Data.csproj>
+<!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add SeedMusicsAndArtistsTable -p MyMusic.Data/MyMusic.Data.csproj-->
 
 startup-project switch tells that MyMusic.Api is the entry project for our app and 
 switch -p tells that the target project of our migrations is MyMusic.Data. 
