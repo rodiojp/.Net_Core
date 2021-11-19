@@ -1,6 +1,12 @@
 # Building a multi layer .NET Core 3.0 API from zero
 
-[Article](https://medium.com/swlh/building-a-nice-multi-layer-net-core-3-api-c68a9ef16368) 
+Inspired by this [article](https://medium.com/swlh/building-a-nice-multi-layer-net-core-3-api-c68a9ef16368) 
+
+Opposite [opinion](https://gunnarpeipman.com/ef-core-repository-unit-of-work/): "No need for repositories and unit of work with Entity Framework Core" 
+
+"Implementing repository querying interface in EF Core DbContext" [article](https://gunnarpeipman.com/ef-core-dbcontext-repository/)
+
+Book "Patterns of Enterprise Application Architecture" [article](https://gunnarpeipman.com/patterns-of-enterprise-application-architecture/)
 
 - `md MyMusic`
 - `cd MyMusic`
@@ -28,43 +34,53 @@
 - `Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Api"`
 
 
-Add-Migration InitialCreate -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations
+`Add-Migration InitialCreate -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations`
+
+- `InitialCreate` is the name of this migration.
+- The `-StartupProject` paremeter tells that **MyMusic.Api** is the entry project for our app.
+- The `-Project` parameter tells that the target project of our migrations is **MyMusic.Data**.
 
 <!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add InitialModel -p MyMusic.Data/MyMusic.Data.csproj-->
 
-Update-Database -StartupProject MyMusic.Api
+`Update-Database -StartupProject MyMusic.Api`
 
 <!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj database update-->
 
-Add-Migration SeedMusicsAndArtistsTable -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations
+`Add-Migration SeedMusicsAndArtistsTable -StartupProject MyMusic.Api -Project MyMusic.Data -OutputDir Migrations`
+
+
 
 <!-- dotnet ef --startup-project MyMusic.Api/MyMusic.Api.csproj migrations add SeedMusicsAndArtistsTable -p MyMusic.Data/MyMusic.Data.csproj-->
 
-startup-project switch tells that MyMusic.Api is the entry project for our app and 
+<!--startup-project switch tells that MyMusic.Api is the entry project for our app and 
 switch -p tells that the target project of our migrations is MyMusic.Data. 
-InitialModel is the name of this migration.
+InitialModel is the name of this migration.-->
 
 
-dotnet add MyMusic.Api/MyMusic.Api.csproj package Swashbuckle.AspNetCore --version 5.0.0-rc3
+<!--dotnet add MyMusic.Api/MyMusic.Api.csproj package Swashbuckle.AspNetCore --version 5.0.0-rc3-->
 
-dotnet add MyMusic.Api/MyMusic.Api.csproj package AutoMapper 
-dotnet add MyMusic.Api/MyMusic.Api.csproj package AutoMapper.Extensions.Microsoft.DependencyInjection
+<!--dotnet add MyMusic.Api/MyMusic.Api.csproj package AutoMapper-->
 
-Install-Package AutoMapper -Version 10.1.1 -ProjectName "MyMusic.Api"
-Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection -Version 8.1.1 -ProjectName "MyMusic.Api"
+<!--dotnet add MyMusic.Api/MyMusic.Api.csproj package AutoMapper.Extensions.Microsoft.DependencyInjection-->
 
-dotnet add MyMusic.Api/MyMusic.Api.csproj package FluentValidation
+- `Install-Package AutoMapper -Version 10.1.1 -ProjectName "MyMusic.Api"`
 
-###FluentValidation###
+- `Install-Package AutoMapper.Extensions.Microsoft.DependencyInjection -Version 8.1.1 -ProjectName "MyMusic.Api"`
+
+<!--dotnet add MyMusic.Api/MyMusic.Api.csproj package FluentValidation`-->
+
+### FluentValidation
 [Documentation](https://docs.fluentvalidation.net/en/latest/aspnet.html)
 
-Install-Package FluentValidation -Version 10.3.4 -ProjectName "MyMusic.Api"
-Install-Package FluentValidation.AspNetCore -Version 10.3.4 -ProjectName "MyMusic.Api"
+- `Install-Package FluentValidation -Version 10.3.4 -ProjectName "MyMusic.Api"`
+- `Install-Package FluentValidation.AspNetCore -Version 10.3.4 -ProjectName "MyMusic.Api"`
 
-Article:  [Using FluentValidation in ASP.NET Core](https://wildermuth.com/2019/11/18/Using-FluentValidation-in-ASP-NET-Core)
+Using FluentValidation in ASP.NET Core [Article](https://wildermuth.com/2019/11/18/Using-FluentValidation-in-ASP-NET-Core)
 
-[Fluent Validation with Swagger in Asp.net Core](https://stackoverflow.com/questions/44638195/fluent-validation-with-swagger-in-asp-net-core)
+Fluent Validation with Swagger in Asp.net Core [Article](https://stackoverflow.com/questions/44638195/fluent-validation-with-swagger-in-asp-net-core)
 
+### Add-Migration Get Help
+```
 PM> get-help add-migration -detailed
 
 NAME
@@ -75,7 +91,8 @@ SYNOPSIS
     
     
 SYNTAX
-    Add-Migration [-Name] <String> [-OutputDir <String>] [-Context <String>] [-Project <String>] [-StartupProject <String>] [-Namespace <String>] [-Args <String>] [<CommonParameters>]
+    Add-Migration [-Name] <String> [-OutputDir <String>] [-Context <String>] [-Project <String>] 
+                  [-StartupProject <String>] [-Namespace <String>] [-Args <String>] [<CommonParameters>]
     
     
 DESCRIPTION
@@ -115,6 +132,6 @@ REMARKS
     For more information, type: "get-help Add-Migration -detailed".
     For technical information, type: "get-help Add-Migration -full".
     For online help, type: "get-help Add-Migration -online"
-
+```
 
 
