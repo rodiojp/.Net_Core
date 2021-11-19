@@ -17,6 +17,7 @@ namespace MyMusic.Api.Validators
 
             RuleFor(m => m.ArtistId)
                 .NotEmpty()
+                .GreaterThan(0)
                 .WithMessage("'Artist Id' must not be 0.");
         }
     }

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyArtist.Api.Controllers
+namespace MyMusic.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -39,6 +39,10 @@ namespace MyArtist.Api.Controllers
         public async Task<ActionResult<ArtistResource>> GetArtistById(int id)
         {
             var artist = await _artistService.GetArtistById(id);
+            if (artist == null)
+            {
+                return NotFound();
+            }
             var artistResource = _mapper.Map<Artist, ArtistResource>(artist);
 
             return Ok(artistResource);
@@ -56,14 +60,14 @@ namespace MyArtist.Api.Controllers
             {
                 return BadRequest(ModelState); // this needs refining, but for demo it is ok
             }
-                
-            var artistToCreate = _mapper.Map<SaveArtistResource, Artist>(saveArtistResource);
 
-            var newArtist = await _artistService.CreateArtist(artistToCreate);
+            Artist artistToCreate = _mapper.Map<SaveArtistResource, Artist>(saveArtistResource);
 
-            var artist = await _artistService.GetArtistById(newArtist.Id);
+            Artist newArtist = await _artistService.CreateArtist(artistToCreate);
 
-            var artistResource = _mapper.Map<Artist, ArtistResource>(artist);
+            Artist artist = await _artistService.GetArtistById(newArtist.Id);
+
+            ArtistResource artistResource = _mapper.Map<Artist, ArtistResource>(artist);
 
             return Ok(artistResource);
         }
