@@ -28,5 +28,15 @@ namespace MyMusic.DataAgent
             Print<Artist>(artist);
             return artist;
         }
+
+        public async Task<Artist> CreateArtist(Artist artistToCreate)
+        {
+            var newArtist = await _artistService.CreateArtist(artistToCreate);
+            Print<Artist>(newArtist);
+            var artist = await _artistService.GetArtistById(newArtist.Id);
+            Print<Artist>(artist);
+            return artist;
+        }
+
     }
 }

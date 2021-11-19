@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MyMusic.Core;
+using MyMusic.Core.Models;
 using MyMusic.Core.Services;
 using MyMusic.Data;
 using MyMusic.Services;
@@ -63,20 +64,28 @@ namespace MyMusic.DataAgent
                 Log.Information("----- Starting service(s)");
                 Log.Information("***** service: .GetService<EmailApp>().Run()");
                 await serviceProvider.GetService<EmailApp>().Run();
+
+                //Log.Information("***** service: .GetService<ArtistsController>().GetArtistById(1)");
+                //Artist newArtist = await serviceProvider.GetService<ArtistsController>().CreateArtist(new Artist() { Name = "John Lennon" });
+
                 Log.Information("***** service: .GetService<ArtistsController>().GetAllArtists()");
                 await serviceProvider.GetService<ArtistsController>().GetAllArtists();
                 Log.Information("***** service: .GetService<ArtistsController>().GetArtistById(1)");
                 await serviceProvider.GetService<ArtistsController>().GetArtistById(1);
+
                 Log.Information("***** service: .GetService<MusicsController>().GetAllMusics()");
                 await serviceProvider.GetService<MusicsController>().GetAllMusics();
                 Log.Information("***** service: .GetService<MusicsController>().GetMusicById(1)");
                 await serviceProvider.GetService<MusicsController>().GetMusicById(1);
+
+
+
                 Log.Information("----- Ending service(s)");
             }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Error running service!");
-                throw ex;
+                //throw ex;
             }
             finally
             {

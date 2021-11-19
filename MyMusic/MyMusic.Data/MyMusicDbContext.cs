@@ -17,5 +17,13 @@ namespace MyMusic.Data
             modelBuilder.ApplyConfiguration(new MusicConfiguration());
             modelBuilder.ApplyConfiguration(new ArtistConfiguration());
         }
+
+        // When Debug: to see key values
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+#if DEBUG
+            optionsBuilder.EnableSensitiveDataLogging();
+#endif
+        }
     }
 }
