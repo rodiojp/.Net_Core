@@ -23,11 +23,13 @@ namespace DependencyApp
             IOrderManager orderManager = Container.GetService<IOrderManager>();
             do
             {
-                Console.WriteLine("Enter a product:" +
-                    $"\n{Product.Keyboard} = {((byte)Product.Keyboard)}," +
-                    $"\n{Product.Mouse} = {((byte)Product.Mouse)}," +
-                    $"\n{Product.Mic} = {((byte)Product.Mic)}," +
-                    $"\n{Product.Speaker} = {((byte)Product.Speaker)}");
+                IProductStockRepo productStockRepo = Container.GetService<IProductStockRepo>();
+                productStockRepo.PrintStock(Container.GetService<IPrintProcessor>());
+                Console.Write("Enter `exit` or a product #: ");
+                    //$"\n{Product.Keyboard} = {((byte)Product.Keyboard)}," +
+                    //$"\n{Product.Mouse} = {((byte)Product.Mouse)}," +
+                    //$"\n{Product.Mic} = {((byte)Product.Mic)}," +
+                    //$"\n{Product.Speaker} = {((byte)Product.Speaker)}");
 
                 product = Console.ReadLine();
                 if (product == "exit") break;

@@ -13,6 +13,7 @@ namespace DependencyLibrary
         public IServiceProvider Build()
         {
             ServiceCollection container = new ServiceCollection();
+            container.AddSingleton<IPrintProcessor, ConsolePrintProcessor>();
             container.AddSingleton<IProductStockRepo, ProductStockRepo>();
             container.AddSingleton<IPaymentProcessor, PaymentProcessor>();
             container.AddSingleton<IShippingProcessor, ShippingProcessor>();

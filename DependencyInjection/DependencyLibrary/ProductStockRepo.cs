@@ -30,12 +30,13 @@ namespace DependencyLibrary
             Console.WriteLine($"Call Update (reduce) the Database for product: {product}");
             _productStockDatabase[product]--;
         }
-        public void PrintStock()
+        public void PrintStock(IPrintProcessor printer)
         {
             Console.WriteLine($"Products available in Stock:");
             foreach (var item in _productStockDatabase)
             {
-                Console.WriteLine($"{item.Key} = {item.Value}");
+                //Console.WriteLine($"{item.Key} = {item.Value}");
+                printer.Print(item.Key, item.Value);
             }
         }
         public void AddStock(Product product)

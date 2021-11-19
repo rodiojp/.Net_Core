@@ -4,7 +4,7 @@
     {
         void AddStock(Product product);
         bool IsInStock(Product product);
-        void PrintStock();
+        void PrintStock(IPrintProcessor printer);
         void ReduceStock(Product product);
     }
 }
