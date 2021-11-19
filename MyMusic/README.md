@@ -1,8 +1,6 @@
 # Building a multi layer .NET Core 3.0 API from zero
 
 [Article](https://medium.com/swlh/building-a-nice-multi-layer-net-core-3-api-c68a9ef16368) 
-The source of application is available [here](https://github.com/alopes2/Medium-MyMusic)
-
 
 - `md MyMusic`
 - `cd MyMusic`
@@ -24,9 +22,9 @@ The source of application is available [here](https://github.com/alopes2/Medium-
 
 #### MyMusic.Data
 
-`Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Data"`
-`Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 5.0.12 -ProjectName "MyMusic.Data"`
-`Install-Package Microsoft.EntityFrameworkCore.Tools -Version 5.0.12 -ProjectName "MyMusic.Data"`
+- `Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Data"`
+- `Install-Package Microsoft.EntityFrameworkCore.SqlServer -Version 5.0.12 -ProjectName "MyMusic.Data"`
+- `Install-Package Microsoft.EntityFrameworkCore.Tools -Version 5.0.12 -ProjectName "MyMusic.Data"`
 
 
 `Install-Package Microsoft.EntityFrameworkCore.Design -Version 5.0.12 -ProjectName "MyMusic.Api"`
