@@ -8,23 +8,34 @@ namespace DependencyApp
 {
     class Program
     {
-        //namespace System
-        //{
-        //    //
-        //    // Summary:
-        //    //     Defines a mechanism for retrieving a service object; that is, an object that
-        //    //     provides custom support to other objects.
-        //    public interface IServiceProvider
-        public static readonly IServiceProvider Container = new ContainerBuilder().Build();
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IPrintProcessor, ConsolePrintProcessor>();
+            services.AddSingleton<IProductStockRepo, ProductStockRepo>();
+            services.AddSingleton<IPaymentProcessor, PaymentProcessor>();
+            services.AddSingleton<IShippingProcessor, ShippingProcessor>();
+            services.AddSingleton<IOrderManager, OrderManager>();
+        }
 
         static void Main(string[] args)
         {
+            #region Create Container
+            // Microsoft.Extensions.DependencyInjection -> ServiceCollection()
+            ServiceCollection serviceCollection = new ServiceCollection();
+            // Call static void ConfigureServices(IServiceCollection services)
+            ConfigureServices(serviceCollection);
+            // Create service provider
+            // Defines a mechanism for retrieving a service object; that is, an object that provides custom support to other objects.
+            // System -> public interface IServiceProvider and Microsoft.Extensions.DependencyInjection -> BuildServiceProvider()
+            IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            #endregion
+
             var product = string.Empty;
-            IOrderManager orderManager = Container.GetService<IOrderManager>();
+            IOrderManager orderManager = serviceProvider.GetService<IOrderManager>();
             do
             {
-                IProductStockRepo productStockRepo = Container.GetService<IProductStockRepo>();
-                productStockRepo.PrintStock(Container.GetService<IPrintProcessor>());
+                IProductStockRepo productStockRepo = serviceProvider.GetService<IProductStockRepo>();
+                productStockRepo.PrintStock(serviceProvider.GetService<IPrintProcessor>());
                 Console.Write("Enter `exit` or a product #: ");
                     //$"\n{Product.Keyboard} = {((byte)Product.Keyboard)}," +
                     //$"\n{Product.Mouse} = {((byte)Product.Mouse)}," +
@@ -32,7 +43,7 @@ namespace DependencyApp
                     //$"\n{Product.Speaker} = {((byte)Product.Speaker)}");
 
                 product = Console.ReadLine();
-                if (product == "exit") break;
+                if (product.Contains("exit",StringComparison.InvariantCultureIgnoreCase)) break;
                 try
                 {
                     // The same implementation as:

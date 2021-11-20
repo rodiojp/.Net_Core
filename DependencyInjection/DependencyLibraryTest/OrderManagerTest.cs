@@ -19,10 +19,12 @@ namespace DependencyLibraryTest
             productStockRepoMock
                 .Setup(m => m.IsInStock(It.IsAny<Product>()))
                 .Returns(false);
-            var paymentProcessorMock = new Mock<IPaymentProcessor>();
-            var shippingProcessorMock = new Mock<IShippingProcessor>();
+            var mockPaymentProcessor = new Mock<IPaymentProcessor>();
+            var mockMhippingProcessor = new Mock<IShippingProcessor>();
+            var mockPrintProcessor = new Mock<IPrintProcessor>();
+
             // Tests that we expect to return true.
-            OrderManager orderManager = new OrderManager(productStockRepoMock.Object, paymentProcessorMock.Object, shippingProcessorMock.Object);
+            OrderManager orderManager = new OrderManager(productStockRepoMock.Object, mockPaymentProcessor.Object, mockMhippingProcessor.Object, mockPrintProcessor.Object);
             orderManager.Submit(product, creditCardNumber, expiryDate);
             
             // Sipping the same product to generate availability Exception

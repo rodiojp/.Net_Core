@@ -7,10 +7,10 @@ namespace DependencyLibrary
 
     public class ProductStockRepo : IProductStockRepo
     {
-        private static Dictionary<Product, int> _productStockDatabase = SetupOfStock();
-        private static Dictionary<Product, int> SetupOfStock()
+        private static SortedList<Product, int> _productStockDatabase = SetupOfStock();
+        private static SortedList<Product, int> SetupOfStock()
         {
-            Dictionary<Product, int> productStockDatabase = new Dictionary<Product, int>()
+            SortedList<Product, int> productStockDatabase = new SortedList<Product, int>()
                 {
                     {Product.Keyboard, 1},
                     {Product.Mic,1},
