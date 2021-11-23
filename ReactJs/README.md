@@ -175,6 +175,8 @@ Article: [React-Router: No Not Found Route?](https://stackoverflow.com/questions
 
 For react-router 4 and 5 keep the path
 
+`<Route exact: bool/>`
+When true, the active class/style will only be applied if the location is matched exactly.
 ```jsx
 import { Route, Switch } from 'react-router';
 export default class App extends Component {
@@ -194,5 +196,29 @@ export default class App extends Component {
     }
 }
 ```
+OR [react-router vs react-router-dom, when to use one or the other?](https://stackoverflow.com/questions/42684809/react-router-vs-react-router-dom-when-to-use-one-or-the-other)
+<!--https://github.com/ReactTraining-->
+```jsx
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+export default class App extends Component {
+    static displayName = App.name;
+
+    render() {
+        return (
+            <Router>
+                <Layout>
+                    <Switch>
+                        <Route path='/' component={Home} exact />
+                        <Route path='/counter' component={Counter} />
+                        <Route path='/fetch-data' component={FetchData} />
+                        <Route component={NotFoundPage} />
+                    </Switch>
+                </Layout>
+            </Router>
+        );
+    }
+}
+```
+
 **The route order is important!**
 
