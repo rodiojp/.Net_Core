@@ -9,7 +9,7 @@ export class Articles extends Component {
         return (
             <>
                 {articles.map((article, key) => (
-                    <div>
+                    <div key={key}>
                         <Link className="text-dark nav-link p-0" to={`/article/${article.name}`}>
                             <h4>{article.title}</h4>
                         </Link>

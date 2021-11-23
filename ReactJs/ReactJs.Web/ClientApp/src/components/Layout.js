@@ -9,7 +9,7 @@ export class Layout extends Component {
         return (
             <>
                 <NavMenu />
-                <Container flex className="px-4">
+                <Container flex="true" className="px-4">
                     {this.props.children}
                 </Container>
             </>

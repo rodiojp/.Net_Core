@@ -248,3 +248,52 @@ export class Article extends Component {
     }
 }
 ```
+
+#### setState in Class Components
+[Understanding Functional Components vs. Class Components in React](https://www.twilio.com/blog/react-choose-functional-components)
+
+[React functional components: const vs. function](https://dev.to/ugglr/react-functional-components-const-vs-function-2kj9)
+
+Type definitions for React 17.0
+```js
+// We MUST keep setState() as a unified signature because it allows proper checking of the method return type.
+// See: https://github.com/DefinitelyTyped/DefinitelyTyped/issues/18365#issuecomment-351013257
+// Also, the ` | S` allows intellisense to not be dumbisense
+setState<K extends keyof S>(
+    state: ((prevState: Readonly<S>, props: Readonly<P>) => (Pick<S, K> | S | null)) | (Pick<S, K> | S | null),
+    callback?: () => void
+): void;
+```
+Usage:
+```jsx
+export class Article extends Component {
+    static displayName = Article.name;
+    constructor(props) {
+        super(props);
+        this.state = { upvotes: 0, comments: [] };
+    }
+    render() {
+        const name = this.props.match.params.name;
+        const article = articleContent.find(x => x.name === name);
+        if (!article) return <NotFoundPage />
+        const otherArticles = articleContent.filter(x => x.name !== name);
+        return (
+            <>
+                <div>
+                    <h1>{article.title}</h1>
+                    <div>This post has been upvoted {this.state.upvotes} times  
+                        <b className="btn btn-outline-primary btn-sm p-0" onClick={() => this.setState({ upvotes: this.state.upvotes + 1 })}>up vote</b>
+                    </div>
+                    {article.content.map((paragraph, key) => (
+                        <p key={key}>{paragraph}</p>
+                    ))}
+                </div>
+                <div>
+                    <h2>Other articles</h2>
+                    <Articles articles={otherArticles}></Articles>
+                </div>
+            </>
+        );
+    }
+}
+```
