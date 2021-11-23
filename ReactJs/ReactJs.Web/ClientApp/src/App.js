@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router';
+import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
@@ -13,14 +13,16 @@ export default class App extends Component {
 
     render() {
         return (
-            <Layout>
-                <Switch>
-                    <Route path='/' component={Home} exact />
-                    <Route path='/counter' component={Counter} />
-                    <Route path='/fetch-data' component={FetchData} />
-                    <Route component={NotFoundPage} />
-                </Switch>
-            </Layout>
+            <Router>
+                <Layout>
+                    <Switch>
+                        <Route path='/' component={Home} exact />
+                        <Route path='/counter' component={Counter} />
+                        <Route path='/fetch-data' component={FetchData} />
+                        <Route component={NotFoundPage} />
+                    </Switch>
+                </Layout>
+            </Router>
         );
     }
 }
