@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import articleContent from '../components/article-content'
 import { Articles } from '../components/Articles';
+import { NotFoundPage } from './NotFoundPage';
 
 export class Article extends Component {
     static displayName = Article.name;
@@ -8,7 +9,7 @@ export class Article extends Component {
     render() {
         const name = this.props.match.params.name;
         const article = articleContent.find(x => x.name === name);
-        if (!article) return <h1>Article does not exist!</h1>
+        if (!article) return <NotFoundPage/>
         const otherArticles = articleContent.filter(x => x.name !== name);
         return (
             <>
