@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import articleContent from '../components/article-content'
-import { Link } from 'react-router-dom';
+import { Articles } from '../components/Articles';
 
 
 export class ArticlesList extends Component {
@@ -11,14 +11,7 @@ export class ArticlesList extends Component {
         return (
             <>
                 <h1>Articles</h1>
-                {articleContent.map((article, key) => (
-                    <div>
-                        <Link className="text-dark nav-link p-0" key={key} to={`/article/${article.name}`}>
-                            <h3>{article.title}</h3>
-                        </Link>
-                        <p key={key}>{article.content[0].substring(0, 250)}...</p>
-                    </div>
-                ))}
+                <Articles articles={articleContent}></Articles>
             </>
         );
     }
