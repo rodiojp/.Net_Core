@@ -5,7 +5,7 @@ import { Home } from './pages/Home';
 import { FetchData } from './pages/FetchData';
 import { Counter } from './pages/Counter';
 import { NotFoundPage } from './pages/NotFoundPage';
-import { Article } from './pages/Article';
+import Article from './pages/Article';
 import { ArticlesList } from './pages/ArticlesList';
 
 import './custom.css'
