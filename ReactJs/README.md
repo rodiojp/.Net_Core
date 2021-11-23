@@ -198,6 +198,8 @@ export default class App extends Component {
 ```
 OR [react-router vs react-router-dom, when to use one or the other?](https://stackoverflow.com/questions/42684809/react-router-vs-react-router-dom-when-to-use-one-or-the-other)
 <!--https://github.com/ReactTraining-->
+[BrowserRouter](https://v5.reactrouter.com/web/api/BrowserRouter)
+<!--https://github.com/remix-run/react-router/blob/main/docs/getting-started/installation.md-->
 ```jsx
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 export default class App extends Component {
@@ -222,3 +224,27 @@ export default class App extends Component {
 
 **The route order is important!**
 
+#### Route:Parameters
+[](https://v5.reactrouter.com/web/api/match)
+
+```jsx
+import PropTypes from "prop-types";
+export class Article extends Component {
+    static displayName = Article.name;
+    static propTypes = {
+        match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired
+    };
+
+    render() {
+        const { match, location, history } = this.props;
+        console.log(match, location, history)
+        return (
+            <>
+                <h1>This is an article: {match.params.name}</h1>
+           </>
+        );
+    }
+}
+```
