@@ -109,6 +109,7 @@ render() {
 Use [Short Syntax](https://reactjs.org/docs/fragments.html#short-syntax)
 There is a new, shorter syntax you can use for declaring fragments. It looks like empty tags:
 
+
 ```jsx
 class Columns extends React.Component {
   render() {
@@ -121,3 +122,77 @@ class Columns extends React.Component {
   }
 }
 ```
+#### Layout.js
+
+```jsx
+import React, { Component } from 'react';
+import { Container } from 'reactstrap';
+import { NavMenu } from './NavMenu';
+
+export class Layout extends Component {
+    static displayName = Layout.name;
+
+    render() {
+        return (
+            <>
+                <NavMenu />
+                <Container>
+                    {this.props.children}
+                </Container>
+            </>
+        );
+    }
+}
+```
+
+reactstrap Container:
+
+```js
+  var Container = function Container(props) {
+    var className = props.className,
+        cssModule = props.cssModule,
+        fluid = props.fluid,
+        Tag = props.tag,
+        attributes = _objectWithoutPropertiesLoose(props, ["className", "cssModule", "fluid", "tag"]);
+
+    var containerClass = 'container';
+
+    if (fluid === true) {
+      containerClass = 'container-fluid';
+    } else if (fluid) {
+      containerClass = "container-" + fluid;
+    }
+
+    var classes = mapToCssModules(classnames(className, containerClass), cssModule);
+    return React__default.createElement(Tag, _extends({}, attributes, {
+      className: classes
+    }));
+  }; 
+```
+#### Route, Switch
+
+Article: [React-Router: No Not Found Route?](https://stackoverflow.com/questions/32128978/react-router-no-not-found-route)
+
+For react-router 4 and 5 keep the path
+
+```jsx
+import { Route, Switch } from 'react-router';
+export default class App extends Component {
+    static displayName = App.name;
+
+    render() {
+        return (
+            <Layout>
+                <Switch>
+                    <Route path='/' component={Home} exact />
+                    <Route path='/counter' component={Counter} />
+                    <Route path='/fetch-data' component={FetchData} />
+                    <Route component={NotFoundPage} />
+                </Switch>
+            </Layout>
+        );
+    }
+}
+```
+**The route order is important!**
+

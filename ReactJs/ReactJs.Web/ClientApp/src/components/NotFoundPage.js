@@ -5,9 +5,9 @@ export class NotFoundPage extends Component {
 
     render() {
         return (
-            <>
-                <h1>Page Not Found!</h1>
-            </>
+            <React.Fragment>
+                <h1>404: Page Not Found!</h1>
+            </React.Fragment>
         );
     }
 }
