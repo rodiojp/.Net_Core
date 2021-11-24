@@ -39,6 +39,17 @@ app.put('/api/articles/:name/voute', (req, res) => {
     res.status(200).send(article)
 })
 
+app.post('/api/articles/:name/addcomment', (req, res) => {
+    const article = articleVoutes.find(article => article.name === req.params.name);
+    if (!article)
+        res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+    const { username, comment } = req.body;
+    if (username && comment)
+        article.comments.push({ username: username, comment: comment })
+
+    res.status(200).send(article)
+})
+
 
 app.use(function (req, res, next) {
     res.status(404).send("404: Sorry can't find that!")
@@ -128,13 +139,16 @@ const articles = [
 const articleVoutes = [
     {
         name: 'learn-react',
-        voutes: 0
+        voutes: 0,
+        comments: []
     }, {
         name: 'learn-node',
-        voutes: 0
+        voutes: 0,
+        comments: []
     }, {
         name: 'my-thoughts-on-resumes',
-        voutes: 0
+        voutes: 0,
+        comments: []
     }
 ];
 
