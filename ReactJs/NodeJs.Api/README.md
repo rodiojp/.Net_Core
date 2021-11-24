@@ -82,3 +82,29 @@ body-parser extracts the entire body portion of an incoming request stream and e
 app.use(express.json());
 
 ```
+### Nodemon
+
+Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
+
+`npm install --save-dev nodemon`
+
+`npm start`
+
+```json
+  "scripts": {
+    "build": "babel src -d dist --source-maps",
+    "start": "npx nodemon --exec npx babel-node src/server.js"
+  }
+```
+
+#### NPM 
+It is a Node.js package manager. Used to install, update, and manages package dependencies.
+- `npm install some-package`
+- `npm run some-package`
+#### NPX
+It is a Node.js package executer. It is used to execute Node.js packages binaries.
+- `npx some-package`
+- `npx create-react-app my-app`
+
+
+
