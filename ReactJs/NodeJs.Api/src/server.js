@@ -17,8 +17,7 @@ const port = 1337
 // add body parser to the request
 app.use(express.json());
 
-app.get('/api/articles', async (req, res) => {
-    const collectionName = 'articles'
+const withDb = async (collectionName, operation) => {
     try {
         // Use connect method to connect to the server
         await client.connect()
@@ -29,85 +28,64 @@ app.get('/api/articles', async (req, res) => {
         console.log('Connected successfully to server');
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
-        // ---  
-        //let query = { name: req.params.name  }
-        let articles = await collection.find({}).toArray();
 
-        console.log('Found articles =>', articles);
-        // ---
+        await operation(collection)
 
-        res.status(200).json(articles)
         client.close()
+        console.log(`withDb - done!`);
     } catch (e) {
         console.error(e)
         res.status(500).json({ message: 'An error has occurred:', e })
     }
+}
+
+app.get('/api/articles', async (req, res) => {
+    const collectionName = 'articles'
+    await withDb(collectionName, async (collection) => {
+        let articles = await collection.find({}).toArray();
+        console.log('Found articles =>', articles)
+        res.status(200).json(articles)
+    })
+    console.log(`get '/api/articles/' - done!`);
 })
 
 app.post('/api/articles/', async (req, res) => {
     const collectionName = 'articles'
-    const { name, title, content } = req.body;
-    if (!name || !title || !content)
-        res.status(422).send()
+    await withDb(collectionName, async (collection) => {
+        const { name, title, content } = req.body;
+        if (!name || !title || !content)
+            res.status(422).send()
 
-    try {
-        // Use connect method to connect to the server
-        await client.connect()
-            .catch(err => { console.log(err); });
-        if (!client) {
-            return;
-        }
-        console.log('Connected successfully to server');
-        const db = client.db(dbName);
-        const collection = db.collection(collectionName);
-        let query = { name: req.params.name }
+        let query = { name: name }
         let articleFound = await collection.findOne(query);
-        console.log('Article is already exists  =>', articleFound);
+        console.log('Found article =>', articleFound);
 
-        // ---
-        if (!article)
-            res.status(404).send(`404: The article '${req.params.name}' is already exists!`)
+        if (articleFound) {
+            res.status(404).send(`404: The article '${articleFound.name}' is already exists!`)
+            return
+        }
         let insertQuery = { name: name, title: title, content: content }
-
         await collection.insert(insertQuery);
         let articleIserted = await collection.findOne(query);
         console.log('Inserted article =>', articleIserted);
-        // ---
-
-        res.status(200).json(article)
-        client.close()
-    } catch (e) {
-        console.error(e)
-        res.status(500).json({ message: 'An error has occurred:', e })
-    }
+        res.status(200).json(articleIserted)
+    })
+    console.log(`post '/api/articles/:name' - done!`);
 })
 
 app.get('/api/articles/:name', async (req, res) => {
     const collectionName = 'articles'
-    try {
-        // Use connect method to connect to the server
-        await client.connect()
-            .catch(err => { console.log(err); });
-        if (!client) {
-            return;
-        }
-        console.log('Connected successfully to server');
-        const db = client.db(dbName);
-        const collection = db.collection(collectionName);
-        // ---  
-        //let query = { name: req.params.name  }
+    await withDb(collectionName, async (collection) => {
         let article = await collection.findOne({ name: req.params.name });
         console.log('Found article =>', article);
         // ---
-        if (!article)
+        if (!article) {
             res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
-
+            return
+        }
         res.status(200).json(article)
-        client.close()
-    } catch (e) {
-        console.error(e)
-        res.status(500).json({ message: 'An error has occurred:', e })
-    }
+    })
+    console.log(`get '/api/articles/' - done!`);
 })
 
 app.put('/api/articles/:name/voute', async (req, res) => {
