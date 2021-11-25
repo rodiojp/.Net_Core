@@ -1,15 +1,25 @@
 # React
 
 [Tutorial: Create a Node.js and React app in Visual Studio](https://docs.microsoft.com/en-us/visualstudio/javascript/tutorial-nodejs-with-react-and-jsx?view=vs-2019)
+
 Before you begin, here's a quick FAQ to introduce you to some key concepts:
 
 - **What is Node.js?**
 
     Node.js is a server-side JavaScript runtime environment that executes JavaScript code.
 
-- **What is npm?**
+- **What is NPM?**
 
     The default package manager for Node.js is npm. A package manager makes it easier to publish and share Node.js source code libraries. The npm package manager simplifies library installation, updating, and uninstallation.
+    It is a Node.js package manager. Used to install, update, and manages package dependencies.
+    - `npm install some-package`
+    - `npm run some-package`
+
+- **What is NPX**
+    
+    It is a Node.js package executer. It is used to execute Node.js packages binaries.
+    - `npx some-package`
+    - `npx create-react-app my-app`
 
 - **What is React?**
 
@@ -24,7 +34,9 @@ Before you begin, here's a quick FAQ to introduce you to some key concepts:
     Webpack bundles JavaScript files so they can run in a browser, and can also transform or package other resources and assets. Webpack can specify a compiler, such as Babel or TypeScript, to transpile JSX or TypeScript code to plain JavaScript.
 
 
+
 #### Updating nodejs
+
 1. Install Chocolatey on Windows following the installation [instructions](https://chocolatey.org/install)
 2. Start Powershell as Admin. Get installed packages: `choco list --localonly `
 3. Uninstall NodeJS, if installed: `Search -> programs -> search for NodeJS -> right-click (if found) –> uninstall`
@@ -50,7 +62,8 @@ c:\ProgramData\chocolatey\lib\nodejs.install\tools\node-v17.1.0-x86.msi
 -->
 #### Updating npm
 - `npm install npm@latest -g`
-  - `npm -v`<br>
+  - `npm -v`
+
 ##### NPM commands
 - `npm install -g <package-name>` (install a module globally)
 - `npm root -g` (directory location of the global module installation)
@@ -91,7 +104,7 @@ There are three top level sub-folders:
 - **src\components\Home.js**
 
 
-Use [<React.Fragment>](https://reactjs.org/docs/fragments.html)
+Use [<React.Fragment> tag](https://reactjs.org/docs/fragments.html)
 
 A common pattern in React is for a component to return multiple elements. Fragments let you group a list of children without adding extra nodes to the DOM.
 
@@ -106,7 +119,7 @@ render() {
   );
 }
 ```
-Use [Short Syntax](https://reactjs.org/docs/fragments.html#short-syntax)
+Use [<></> tag for short syntax ](https://reactjs.org/docs/fragments.html#short-syntax)
 There is a new, shorter syntax you can use for declaring fragments. It looks like empty tags:
 
 
@@ -297,3 +310,157 @@ export class Article extends Component {
     }
 }
 ```
+
+### Intall MongoDB Community Edition
+
+[on macOS](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/)
+or [on Windows](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
+
+The current isntallation package 5.0.4 on [download page](https://www.mongodb.com/try/download/community?tck=docs_server)
+
+The lates [version on Choclatey](https://community.chocolatey.org/packages/mongodb#versionhistory)  MongoDB 5.1.1-rc0 
+
+Installed Chocolatey 5.0.4
+- `choco install mongodb --version=5.0.4`
+
+It creates a Windows service: MongoDB Database Server (MongoDB): 
+`"C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --config "C:\Program Files\MongoDB\Server\5.0\bin\mongod.cfg" --service`
+
+You alsow can install MongoDB on macOS via [Homebrew](https://brew.sh/) 
+or [Installing the Latest mongodb-community Server, Shell, and the Database Tools Together](https://github.com/mongodb/homebrew-brew#installing-the-latest-mongodb-community-server-shell-and-the-database-tools-together)
+Install the latest 5.0.x production release of MongoDB Community Server:
+- `$ brew install mongodb-community@5.0`  
+#### Create MongoDB database on macOS
+Create the DIRECTORY(ies), if they do not already exist:
+- `sudo mkdir -p data/db`
+You needed to alter the owner using the CHOWN command
+- ``sudo chown $USER /data/db /data/db``
+-  
+#### Create MongoDB database in Windows CMD
+
+1. Create database directory.
+    Create the data directory where MongoDB stores data. MongoDB's default data directory path is the absolute path \data\db on the drive from which you start MongoDB.
+
+    From the Command Interpreter, create the data directories:
+
+- `cd C:\`
+- `md "\data\db"`
+
+ 2. Start your MongoDB database.¶
+    To start MongoDB, run exe.
+
+- `"C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data\db"`
+
+    The --dbpath option points to your database directory.
+
+    If the MongoDB database server is running correctly, the Command Interpreter displays:
+
+    `[initandlisten] waiting for connections`
+
+#### Install MongoDB Shell for Windows
+To install MongoDB Shell, run the following command from the command line or from PowerShell:
+- `choco install mongodb-shell`
+
+in the following folder: `C:\ProgramData\chocolatey\lib\mongodb-shell\tools`
+
+#### Open CMD and run Mongosh.exe
+```cmd
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000
+Using MongoDB:          5.0.4
+Using Mongosh:          1.1.2
+```
+
+#### MongoDb commands
+Connect to the new database
+- `use my-blog`
+
+##### Insert new Collecion to the database:#####
+```js 
+db.articleVoutes.insert([
+    {
+        name: 'learn-react',
+        voutes: 0,
+        comments: []
+    }, {
+        name: 'learn-node',
+        voutes: 0,
+        comments: []
+    }, {
+        name: 'my-thoughts-on-resumes',
+        voutes: 0,
+        comments: []
+    }
+])
+```
+
+The result is:
+```js
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("619ea11c155c9cfddce5907d"),
+    '1': ObjectId("619ea11c155c9cfddce5907e"),
+    '2': ObjectId("619ea11c155c9cfddce5907f")
+  }
+}
+```
+
+##### 
+- `db.getCollectionNames()`
+The result is:
+```js
+[ 'articleVotes' ]
+```
+##### Find all the articles in a Collection
+- `db.articleVotes.find({})` or `db.articles.find({}).pretty()`
+
+The result is:
+```js
+[
+  {
+    _id: ObjectId("619ea11c155c9cfddce5907d"),
+    name: 'learn-react',
+    voutes: 0,
+    comments: []
+  },
+  {
+    _id: ObjectId("619ea11c155c9cfddce5907e"),
+    name: 'learn-node',
+    voutes: 0,
+    comments: []
+  },
+  {
+    _id: ObjectId("619ea11c155c9cfddce5907f"),
+    name: 'my-thoughts-on-resumes',
+    voutes: 0,
+    comments: []
+  }
+]
+```
+##### Search articles a Collection by the property #####
+- `db.articleVotes.find({name: 'learn-node'})` or `db.articleVotes.findOne({name: 'learn-node'})`
+
+The result is:
+```js
+[
+  {
+    _id: ObjectId("619ea11c155c9cfddce5907e"),
+    name: 'learn-node',
+    voutes: 0,
+    comments: []
+  }
+]
+```
+##### To exit, press Ctrl+C or Ctrl+D or type .exit
+
+
+
+### MongoDB NodeJS Driver
+
+[Article](https://www.npmjs.com/package/mongodb)
+
+- `npm install mongodb --save`
+
+The latest npm `"mongodb": "^4.2.0"` package is [compatible](https://docs.mongodb.com/drivers/node/current/compatibility/#mongodb-compatibility) with the MongoDB 5.1 database
+

@@ -69,6 +69,37 @@ app.listen(port, () => {
 })
 ```
 
+#### Using Async/await with a request handler with MongoDB
+[Using Async/await in Express](https://zellwk.com/blog/async-await-express/), you need to use the `async` keyword when you define a request handler. (Note: These request handlers are known as called "controllers". I prefer calling them request handlers because request handlers are more explicit).
+```js
+app.get('/api/articles/:name', async (req, res) => {
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection('articles');
+        //let query = { name: req.params.name  }
+        var article = await collection.findOne({ name: req.params.name });
+        console.log('Found article =>', article);
+        //const article = articles.find(article => article.name === req.params.name);
+        if (!article)
+            res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+
+        res.status(200).json(article)
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({message: 'An error has occurred:', e})
+    }
+})
+```
+
+
 ### Request body parser
 
 <!--[What does body-parser do with express?](https://stackoverflow.com/questions/38306569/what-does-body-parser-do-with-express#answer-43626891)-->
@@ -97,14 +128,6 @@ Nodemon is a tool that helps develop node.js based applications by automatically
   }
 ```
 
-#### NPM 
-It is a Node.js package manager. Used to install, update, and manages package dependencies.
-- `npm install some-package`
-- `npm run some-package`
-#### NPX
-It is a Node.js package executer. It is used to execute Node.js packages binaries.
-- `npx some-package`
-- `npx create-react-app my-app`
 
 
 

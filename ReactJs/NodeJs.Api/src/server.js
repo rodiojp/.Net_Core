@@ -1,53 +1,187 @@
 const express = require('express')
 const app = express()
+
+const { MongoClient } = require('mongodb');
+// or as an es module:
+// import { MongoClient } from 'mongodb'
+
+// Connection URL
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+// Database Name
+const dbName = 'my-blog';
+
+// Application localhost port:
 const port = 1337
 
 // add body parser to the request
 app.use(express.json());
 
-app.get('/api/articles', (req, res) => {
-    res.send(articles)
+app.get('/api/articles', async (req, res) => {
+    const collectionName = 'articles'
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        // ---  
+        //let query = { name: req.params.name  }
+        let articles = await collection.find({}).toArray();
+
+        console.log('Found articles =>', articles);
+        // ---
+
+        res.status(200).json(articles)
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'An error has occurred:', e })
+    }
 })
 
-app.post('/api/articles', (req, res) => {
-    var body = req.body;
-    console.log(body);
-    res.send(`post from /api/articles body:{ "name":"${body.name}" }`)
+app.post('/api/articles/', async (req, res) => {
+    const collectionName = 'articles'
+    const { name, title, content } = req.body;
+    if (!name || !title || !content)
+        res.status(422).send()
+
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        let query = { name: req.params.name }
+        let articleFound = await collection.findOne(query);
+        console.log('Article is already exists  =>', articleFound);
+
+        // ---
+        if (!article)
+            res.status(404).send(`404: The article '${req.params.name}' is already exists!`)
+        let insertQuery = { name: name, title: title, content: content }
+
+        await collection.insert(insertQuery);
+        let articleIserted = await collection.findOne(query);
+        console.log('Inserted article =>', articleIserted);
+        // ---
+
+        res.status(200).json(article)
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'An error has occurred:', e })
+    }
 })
 
-app.get('/api/articles/:name', (req, res) => {
-    const article = articles.find(article => article.name === req.params.name);
-    if (!article)
-        res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+app.get('/api/articles/:name', async (req, res) => {
+    const collectionName = 'articles'
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        // ---  
+        //let query = { name: req.params.name  }
+        let article = await collection.findOne({ name: req.params.name });
+        console.log('Found article =>', article);
+        // ---
+        if (!article)
+            res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
 
-    res.status(200).send(article)
+        res.status(200).json(article)
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'An error has occurred:', e })
+    }
 })
 
-app.post('/api/articles/:name', (req, res) => {
-    const article = articles.find(article => article.name === req.params.name);
-    if (!article)
-        res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+app.put('/api/articles/:name/voute', async (req, res) => {
+    const collectionName = 'articleVoutes'
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        // ---  
+        //let query = { name: req.params.name  }
+        let article = await collection.findOne({ name: req.params.name });
+        console.log('Found article =>', article);
+        // ---
+        if (!article)
+            res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
 
-    res.status(200).send(article)
+        article.voutes += 1;
+        await collection.update({ _id: article._id }, { $set: { voutes: article.voutes } })
+
+        let updatedArticle = await collection.findOne({ name: req.params.name })
+        console.log('Updated article =>', updatedArticle);
+
+        res.status(200).json(updatedArticle)
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'An error has occurred:', e })
+    }
 })
 
-app.put('/api/articles/:name/voute', (req, res) => {
-    const article = articleVoutes.find(article => article.name === req.params.name);
-    if (!article)
-        res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
-    article.voutes += 1
-    res.status(200).send(article)
-})
-
-app.post('/api/articles/:name/addcomment', (req, res) => {
-    const article = articleVoutes.find(article => article.name === req.params.name);
-    if (!article)
-        res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+app.put('/api/articles/:name/addcomment', async (req, res) => {
     const { username, comment } = req.body;
-    if (username && comment)
+    if (!username || !comment)
+        res.status(422).send()
+
+    const collectionName = 'articleVoutes'
+    try {
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
+        if (!client) {
+            return;
+        }
+        console.log('Connected successfully to server');
+        const db = client.db(dbName);
+        const collection = db.collection(collectionName);
+        // ---  
+        //let query = { name: req.params.name  }
+        let article = await collection.findOne({ name: req.params.name })
+        console.log('Found article =>', article);
+        // ---
+        if (!article)
+            res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
+
         article.comments.push({ username: username, comment: comment })
 
-    res.status(200).send(article)
+        await collection.update({ _id: article._id }, { $set: { comments: article.comments } })
+
+        let updatedArticle = await collection.findOne({ name: req.params.name })
+        console.log('Updated article =>', updatedArticle);
+
+        res.status(200).json(updatedArticle)
+
+        client.close()
+    } catch (e) {
+        console.error(e)
+        res.status(500).json({ message: 'An error has occurred:', e })
+    }
 })
 
 
@@ -60,95 +194,95 @@ app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
 })
 
-const articles = [
-    {
-        name: 'learn-react',
-        title: 'The Fastest Way to Learn React',
-        content: [
-            `Welcome! Today we're going to be talking about the fastest way to
-            learn React. We'll be discussing some topics such as proin congue
-            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
-            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
-            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
-            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
-            sodales purus euismod.`,
-            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-        ]
-    }, {
-        name: 'learn-node',
-        title: 'How to Build a Node Server in 10 Minutes',
-        content: [
-            `In this article, we're going to be talking looking at a very quick way
-            to set up a Node.js server. We'll be discussing some topics such as proin congue
-            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
-            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
-            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
-            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
-            sodales purus euismod.`,
-            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-        ]
-    }, {
-        name: 'my-thoughts-on-resumes',
-        title: 'My Thoughts on Resumes',
-        content: [
-            `Today is the day I talk about something which scares most people: resumes.
-            In reality, I'm not sure why people have such a hard time with proin congue
-            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
-            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
-            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
-            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
-            sodales purus euismod.`,
-            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
-            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
-            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
-            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
-            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
-            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
-        ]
-    },
-];
+//const articles = [
+//    {
+//        name: 'learn-react',
+//        title: 'The Fastest Way to Learn React',
+//        content: [
+//            `Welcome! Today we're going to be talking about the fastest way to
+//            learn React. We'll be discussing some topics such as proin congue
+//            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
+//            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
+//            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
+//            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
+//            sodales purus euismod.`,
+//            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//        ]
+//    }, {
+//        name: 'learn-node',
+//        title: 'How to Build a Node Server in 10 Minutes',
+//        content: [
+//            `In this article, we're going to be talking looking at a very quick way
+//            to set up a Node.js server. We'll be discussing some topics such as proin congue
+//            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
+//            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
+//            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
+//            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
+//            sodales purus euismod.`,
+//            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//        ]
+//    }, {
+//        name: 'my-thoughts-on-resumes',
+//        title: 'My Thoughts on Resumes',
+//        content: [
+//            `Today is the day I talk about something which scares most people: resumes.
+//            In reality, I'm not sure why people have such a hard time with proin congue
+//            ligula id risus posuere, vel eleifend ex egestas. Sed in turpis leo. 
+//            Aliquam malesuada in massa tincidunt egestas. Nam consectetur varius turpis, 
+//            non porta arcu porttitor non. In tincidunt vulputate nulla quis egestas. Ut 
+//            eleifend ut ipsum non fringilla. Praesent imperdiet nulla nec est luctus, at 
+//            sodales purus euismod.`,
+//            `Donec vel mauris lectus. Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//            `Etiam nec lectus urna. Sed sodales ultrices dapibus. 
+//            Nam blandit tristique risus, eget accumsan nisl interdum eu. Aenean ac accumsan 
+//            nisi. Nunc vel pulvinar diam. Nam eleifend egestas viverra. Donec finibus lectus 
+//            sed lorem ultricies, eget ornare leo luctus. Morbi vehicula, nulla eu tempor 
+//            interdum, nibh elit congue tellus, ac vulputate urna lorem nec nisi. Morbi id 
+//            consequat quam. Vivamus accumsan dui in facilisis aliquet.`,
+//        ]
+//    },
+//];
 
-const articleVoutes = [
-    {
-        name: 'learn-react',
-        voutes: 0,
-        comments: []
-    }, {
-        name: 'learn-node',
-        voutes: 0,
-        comments: []
-    }, {
-        name: 'my-thoughts-on-resumes',
-        voutes: 0,
-        comments: []
-    }
-];
+//const articleVoutes = [
+//    {
+//        name: 'learn-react',
+//        voutes: 0,
+//        comments: []
+//    }, {
+//        name: 'learn-node',
+//        voutes: 0,
+//        comments: []
+//    }, {
+//        name: 'my-thoughts-on-resumes',
+//        voutes: 0,
+//        comments: []
+//    }
+//];
 
