@@ -1,26 +1,31 @@
 const express = require('express')
 const app = express()
-var cors = require('cors')
-var corsOptions = {
+const cors = require('cors')
+const corsOptions = {
     origin: 'https://localhost:44320', //origin: 'http://example.com',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-const { MongoClient } = require('mongodb');
 // or as an es module:
 // import { MongoClient } from 'mongodb'
+const { MongoClient } = require('mongodb');
 
-// Connection URL
+// Connection URL for MongoDb
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
 // Database Name
 const dbName = 'my-blog';
 
+// add body parser to the request
+app.use(express.json());
+
 // Application localhost port:
 const port = 1337
 
-// add body parser to the request
-app.use(express.json());
+
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
+})
 
 const withDb = async (collectionName, operation) => {
     try {
@@ -49,7 +54,7 @@ app.get('/api/articles', cors(corsOptions), async (req, res) => {
     await withDb(collectionName, async (collection) => {
         let articles = await collection.find({}).toArray();
         console.log('Found articles =>', articles)
-        
+
         res.status(200).json(articles)
     })
     console.log(`get '/api/articles/' - done!`);
@@ -74,7 +79,7 @@ app.post('/api/articles/', cors(corsOptions), async (req, res) => {
         await collection.insert(insertQuery);
         let articleIserted = await collection.findOne(query);
         console.log('Inserted article =>', articleIserted);
-        
+
         res.status(200).json(articleIserted)
     })
     console.log(`post '/api/articles/:name' - done!`);
@@ -119,7 +124,7 @@ app.put('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
 
         let updatedArticle = await collection.findOne({ name: req.params.name })
         console.log('Updated article =>', updatedArticle);
-        
+
         res.status(200).json(updatedArticle)
         client.close()
     } catch (e) {
@@ -182,15 +187,12 @@ app.put('/api/articles/:name/addcomment', cors(corsOptions), async (req, res) =>
     }
 })
 
-
-app.use(function (req, res, next) {
+// This should be the last route function
+app.use(cors(corsOptions), function (req, res, next) {
     res.status(404).send("404: Sorry can't find that!")
 })
 
 
-app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-})
 
 //const articles = [
 //    {

@@ -369,7 +369,6 @@ Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverS
 Using MongoDB:          5.0.4
 Using Mongosh:          1.1.2
 ```
-
 #### MongoDb commands
 Connect to the new database
 - `use my-blog`

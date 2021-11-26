@@ -104,15 +104,19 @@ app.get('/api/articles/:name', async (req, res) => {
 
 <!--[What does body-parser do with express?](https://stackoverflow.com/questions/38306569/what-does-body-parser-do-with-express#answer-43626891)-->
 
-To handle HTTP POST requests in Express.js version 4.16 and above, you need to install the middleware module called body-parser.
+To handle HTTP POST requests in Express.js version 4.16 and above, you **do not** need to install the middleware module called `body-parser`.
 
-body-parser extracts the entire body portion of an incoming request stream and exposes it on req.body.
-
+just add the folling line in a header of server.js file:
 ```js
 // add body parser to the request
 app.use(express.json());
-
 ```
+This will allow you to extract `body` sent in request:
+```js
+const { name, title, content } = req.body;
+```
+
+
 ### Nodemon
 
 Nodemon is a tool that helps develop node.js based applications by automatically restarting the node application when file changes in the directory are detected.
@@ -145,5 +149,98 @@ var corsOptions = {
 and `cors(corsOptions)` shoiuld be included in every CRUD request:
 
 app.get('/api/articles'`, cors(corsOptions)`, async (req, res) => {
+#### Fetch: Cross-Origin Request
+https://javascript.info/fetch-crossorigin
+
+When we try to make a unsafe request ['PUT',['DELETE']] from the any browser, the browser sends a special **`preflight`** request that asks the server – does it agree to accept such cross-origin requests, or not in this section of our `server.js` application
+```js
+// This should be the last route function
+app.use(cors(corsOptions), function (req, res, next) {
+    res.status(404).send("404: Sorry can't find that!")
+})
+```
+
+And, unless the server explicitly confirms that with headers, an unsafe request is not sent.
+
+#### CORS for safe requests
+If a request is cross-origin, the browser always adds the Origin header to it.
+
+For instance, if we request http://localhost:1337/api/articles/learn-react/voute from https://localhost:44320 the headers will look like:
+
+The General part of the **`preflight`** request will be:
+```json
+Request URL: http://localhost:1337/api/articles/learn-react/voute
+Request Method: OPTIONS
+Status Code: 200 OK
+Remote Address: [::1]:1337
+Referrer Policy: strict-origin-when-cross-origin
+```
+The **Request Headers** of the **`preflight`** request will be:
+```json
+Accept: */*
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9
+Access-Control-Request-Method: PUT
+Cache-Control: no-cache
+Connection: keep-alive
+Host: localhost:1337
+Origin: https://localhost:44320
+Pragma: no-cache
+Sec-Fetch-Dest: empty
+Sec-Fetch-Mode: cors
+Sec-Fetch-Site: cross-site
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)
+```
+
+This special **`preflight`** request goes here: !!! not in PUT method of the `express` linbrary 
+and therfore `cors(corsOptions)`, should be added as aparamter of the function call.  
+```js
+app.use(cors(corsOptions), function (req, res, next) {
+    res.status(404).send("404: Sorry can't find that!")
+})
+```
 
 
+The **Respons Headers** will be:
+```json
+Access-Control-Allow-Methods: GET,HEAD,PUT,PATCH,POST,DELETE
+Access-Control-Allow-Origin: https://localhost:44320
+Connection: keep-alive
+Content-Length: 0
+Date: *** GMT
+Keep-Alive: timeout=5
+Vary: Origin, Access-Control-Request-Headers
+X-Powered-By: Express
+```
+
+#### Extract request http headers
+
+Set a breakpoint on `res.status(404).send("404: Sorry can't find that!")` line to get req data
+```js
+app.use(cors(corsOptions), function (req, res, next) {
+    res.status(404).send("404: Sorry can't find that!")
+})
+```
+Inspect the req variable in `Immediate Window` or `Watch`
+```js
+req.get('access-control-request-method')
+"PUT"
+```
+or
+```
+req.headers['access-control-request-method']
+"PUT"
+```
+
+
+#### Making HTTP Requests in Node.js with node-fetch
+https://stackabuse.com/making-http-requests-in-node-js-with-node-fetch/
+
+### Set up Your MongoDb in NodeJs Project
+
+[Set up Your NodeJs Project](https://docs.mongodb.com/drivers/node/current/quick-start/)
+```js
+// Connection URL to MongoDb
+const url = 'mongodb://localhost:27017';
+const client = new MongoClient(url);
+```
