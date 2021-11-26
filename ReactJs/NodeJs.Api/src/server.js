@@ -1,5 +1,10 @@
 const express = require('express')
 const app = express()
+var cors = require('cors')
+var corsOptions = {
+    origin: 'https://localhost:44320', //origin: 'http://example.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
 
 const { MongoClient } = require('mongodb');
 // or as an es module:
@@ -39,17 +44,18 @@ const withDb = async (collectionName, operation) => {
     }
 }
 
-app.get('/api/articles', async (req, res) => {
+app.get('/api/articles', cors(corsOptions), async (req, res) => {
     const collectionName = 'articles'
     await withDb(collectionName, async (collection) => {
         let articles = await collection.find({}).toArray();
         console.log('Found articles =>', articles)
+        
         res.status(200).json(articles)
     })
     console.log(`get '/api/articles/' - done!`);
 })
 
-app.post('/api/articles/', async (req, res) => {
+app.post('/api/articles/', cors(corsOptions), async (req, res) => {
     const collectionName = 'articles'
     await withDb(collectionName, async (collection) => {
         const { name, title, content } = req.body;
@@ -68,17 +74,17 @@ app.post('/api/articles/', async (req, res) => {
         await collection.insert(insertQuery);
         let articleIserted = await collection.findOne(query);
         console.log('Inserted article =>', articleIserted);
+        
         res.status(200).json(articleIserted)
     })
     console.log(`post '/api/articles/:name' - done!`);
 })
 
-app.get('/api/articles/:name', async (req, res) => {
+app.get('/api/articles/:name', cors(corsOptions), async (req, res) => {
     const collectionName = 'articles'
     await withDb(collectionName, async (collection) => {
         let article = await collection.findOne({ name: req.params.name });
         console.log('Found article =>', article);
-        // ---
         if (!article) {
             res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
             return
@@ -88,7 +94,7 @@ app.get('/api/articles/:name', async (req, res) => {
     console.log(`get '/api/articles/' - done!`);
 })
 
-app.put('/api/articles/:name/voute', async (req, res) => {
+app.put('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
     const collectionName = 'articleVoutes'
     try {
         // Use connect method to connect to the server
@@ -113,7 +119,7 @@ app.put('/api/articles/:name/voute', async (req, res) => {
 
         let updatedArticle = await collection.findOne({ name: req.params.name })
         console.log('Updated article =>', updatedArticle);
-
+        
         res.status(200).json(updatedArticle)
         client.close()
     } catch (e) {
@@ -122,7 +128,21 @@ app.put('/api/articles/:name/voute', async (req, res) => {
     }
 })
 
-app.put('/api/articles/:name/addcomment', async (req, res) => {
+app.get('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
+    const collectionName = 'articleVoutes'
+    await withDb(collectionName, async (collection) => {
+        let articleVoute = await collection.findOne({ name: req.params.name });
+        console.log('Found articleVoute =>', articleVoute);
+        if (!articleVoute) {
+            res.status(404).send(`404: Sorry can't find the articleVoute '${req.params.name}'`)
+            return
+        }
+        res.status(200).json(articleVoute)
+    })
+    console.log(`get '/api/articles/:name/voute' - done!`);
+})
+
+app.put('/api/articles/:name/addcomment', cors(corsOptions), async (req, res) => {
     const { username, comment } = req.body;
     if (!username || !comment)
         res.status(422).send()

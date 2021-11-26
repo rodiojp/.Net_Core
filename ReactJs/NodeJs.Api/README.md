@@ -128,6 +128,22 @@ Nodemon is a tool that helps develop node.js based applications by automatically
   }
 ```
 
+### CORS
+[CORS for Express server](http://expressjs.com/en/resources/middleware/cors.html#enabling-cors-pre-flight)
 
+CORS is a [node.js package](https://www.npmjs.com/package/cors) for providing a Connect/Express middleware that can be used to enable CORS with various options.
+- `npm install cors`
+
+add the following client `origin: 'https://localhost:44320'` to the server.js header (origin mast be  without last `/`)
+```jsx
+var cors = require('cors')
+var corsOptions = {
+    origin: 'https://localhost:44320', //origin: 'http://example.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+```
+and `cors(corsOptions)` shoiuld be included in every CRUD request:
+
+app.get('/api/articles'`, cors(corsOptions)`, async (req, res) => {
 
 
