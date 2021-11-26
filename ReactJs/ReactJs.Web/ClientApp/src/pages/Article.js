@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import articleContent from '../components/article-content'
 import { Articles } from '../components/Articles';
 import { NotFoundPage } from './NotFoundPage';
+import Comments from '../components/Comments';
 
 const Article = ({ match }) => {
     const name = match.params.name;
@@ -36,6 +37,7 @@ const Article = ({ match }) => {
             <div>
                 <h2>Other articles</h2>
                 <Articles articles={otherArticles}></Articles>
+                <Comments comments={articleInfo.comments} />
             </div>
         </>
     );
