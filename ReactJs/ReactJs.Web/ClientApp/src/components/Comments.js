@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const Comments = ({ comments }) => {
 
     return (
-        <>
-            <h4>Comments</h4>
+        <div>
             {comments.map((comment, key) => (
                 <p key={key}>{comment.username}: {comment.comment}</p>
             ))}
-        </>
+        </div>
     );
 };
 export default Comments;

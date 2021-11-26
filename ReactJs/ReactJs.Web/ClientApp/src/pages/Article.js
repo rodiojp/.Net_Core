@@ -4,6 +4,7 @@ import { Articles } from '../components/Articles';
 import { NotFoundPage } from './NotFoundPage';
 import Comments from '../components/Comments';
 import UpvotesSection from '../components/UpvotesSection'
+import AddComment from '../components/AddComment'
 
 const Article = ({ match }) => {
     const name = match.params.name;
@@ -38,7 +39,11 @@ const Article = ({ match }) => {
             <div>
                 <h2>Other articles</h2>
                 <Articles articles={otherArticles}></Articles>
-                <Comments comments={articleInfo.comments} />
+                <div>
+                    <h4>Comments</h4>
+                    <AddComment name={name} setArticleInfo={setArticleInfo} />
+                    <Comments comments={articleInfo.comments} />
+                </div>
             </div>
         </>
     );

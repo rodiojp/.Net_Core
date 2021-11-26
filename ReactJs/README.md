@@ -135,6 +135,14 @@ class Columns extends React.Component {
   }
 }
 ```
+#### Minimal React component
+```js
+import React from 'react';
+
+const AddComment = () => { return <></> };
+
+export default AddComment;
+```
 #### Layout.js
 
 ```jsx
