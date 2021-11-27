@@ -75,6 +75,8 @@ c:\ProgramData\chocolatey\lib\nodejs.install\tools\node-v17.1.0-x86.msi
 And then go to the directory you want your projects directory to be inside of.
 - `npx create-react-app my-blog --use-npm`
 
+These source of [react-scripts](https://github.com/facebook/create-react-app/tree/main/packages/react-scripts) and configuration used by Create React App.
+
 #### Run react application
 - `cd my-blog`
 - `npm start`
