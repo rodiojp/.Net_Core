@@ -29,33 +29,43 @@ app.listen(port, () => {
 
 const withDb = async (collectionName, operation) => {
     try {
-        // Use connect method to connect to the server
-        await client.connect()
-            .catch(err => { console.log(err); });
         if (!client) {
+            console.log('DB client is not identified!');
             return;
         }
+        // Use connect method to connect to the server
+        await client.connect()
+        //.catch(err => { console.log(err); });
         console.log('Connected successfully to server');
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
 
         await operation(collection)
-
-        client.close()
         console.log(`withDb - done!`);
     } catch (e) {
         console.error(e)
         res.status(500).json({ message: 'An error has occurred:', e })
+    }
+    finally {
+        client.close();
     }
 }
 
 app.get('/api/articles', cors(corsOptions), async (req, res) => {
     const collectionName = 'articles'
     await withDb(collectionName, async (collection) => {
-        let articles = await collection.find({}).toArray();
-        console.log('Found articles =>', articles)
 
-        res.status(200).json(articles)
+        const query = {};
+        const projection = { _id: 0, name: 1, title: 1, content: 1 };
+        const articles = await collection.find(query).project(projection)
+            .sort({ name: 1 })
+            .toArray();
+        if (!articles) {
+            res.status(404).send(`404: Sorry can't find any article `)
+        }
+        else {
+            res.status(200).json(articles)
+        }
     })
     console.log(`get '/api/articles/' - done!`);
 })
@@ -73,41 +83,46 @@ app.post('/api/articles/', cors(corsOptions), async (req, res) => {
 
         if (articleFound) {
             res.status(404).send(`404: The article '${articleFound.name}' is already exists!`)
-            return
+        } else {
+            let insertQuery = { name: name, title: title, content: content }
+            await collection.insert(insertQuery);
+            let articleIserted = await collection.findOne(query);
+            console.log('Inserted article =>', articleIserted);
+            res.status(200).json(articleIserted)
         }
-        let insertQuery = { name: name, title: title, content: content }
-        await collection.insert(insertQuery);
-        let articleIserted = await collection.findOne(query);
-        console.log('Inserted article =>', articleIserted);
-
-        res.status(200).json(articleIserted)
     })
     console.log(`post '/api/articles/:name' - done!`);
 })
 
 app.get('/api/articles/:name', cors(corsOptions), async (req, res) => {
+    console.log(`Start get '/api/articles/${req.params.name}' - done!`);
+
     const collectionName = 'articles'
     await withDb(collectionName, async (collection) => {
-        let article = await collection.findOne({ name: req.params.name });
-        console.log('Found article =>', article);
+        const query = { name: req.params.name };
+        const projection = { _id: 0, name: 1, title: 1, content: 1 };
+        const article = await collection.findOne(query, projection);
         if (!article) {
-            res.status(404).send(`404: Sorry can't find the article '${req.params.name}'`)
-            return
+            const errorMessage = `404: Sorry can't find the article '${req.params.name}'`
+            console.log(errorMessage);
+            res.status(404).send(errorMessage)
         }
-        res.status(200).json(article)
+        else {
+            res.status(200).json(article)
+        }
     })
-    console.log(`get '/api/articles/' - done!`);
+    console.log(`End get '/api/articles/${req.params.name}'`);
 })
 
 app.put('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
     const collectionName = 'articleVoutes'
     try {
-        // Use connect method to connect to the server
-        await client.connect()
-            .catch(err => { console.log(err); });
         if (!client) {
             return;
         }
+        // Use connect method to connect to the server
+        await client.connect()
+            .catch(err => { console.log(err); });
         console.log('Connected successfully to server');
         const db = client.db(dbName);
         const collection = db.collection(collectionName);
@@ -136,13 +151,16 @@ app.put('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
 app.get('/api/articles/:name/voute', cors(corsOptions), async (req, res) => {
     const collectionName = 'articleVoutes'
     await withDb(collectionName, async (collection) => {
+        if (!collection)
+            console.log('Collection is not defined');
+
         let articleVoute = await collection.findOne({ name: req.params.name });
         console.log('Found articleVoute =>', articleVoute);
         if (!articleVoute) {
             res.status(404).send(`404: Sorry can't find the articleVoute '${req.params.name}'`)
-            return
+        } else {
+            res.status(200).json(articleVoute)
         }
-        res.status(200).json(articleVoute)
     })
     console.log(`get '/api/articles/:name/voute' - done!`);
 })
@@ -154,12 +172,12 @@ app.put('/api/articles/:name/addcomment', cors(corsOptions), async (req, res) =>
 
     const collectionName = 'articleVoutes'
     try {
-        // Use connect method to connect to the server
-        await client.connect()
-            .catch(err => { console.log(err); });
         if (!client) {
             return;
         }
+        // Use connect method to connect to the server
+        await client.connect()
+        //    .catch(err => { console.log(err); });
         console.log('Connected successfully to server');
         const db = client.db(dbName);
         const collection = db.collection(collectionName);

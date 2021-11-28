@@ -415,7 +415,7 @@ DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany
 }
 ```
 
-##### 
+##### Get Names of all Collections
 - `db.getCollectionNames()`
 The result is:
 ```js
@@ -448,7 +448,7 @@ The result is:
 ]
 ```
 ##### Search articles a Collection by the property #####
-- `db.articleVotes.find({name: 'learn-node'})` or `db.articleVotes.findOne({name: 'learn-node'})`
+- `db.articleVotes.find({name: 'learn-node'})`
 
 The result is:
 ```js
@@ -467,9 +467,13 @@ The result is:
 
 ### MongoDB NodeJS Driver
 
-[Article](https://www.npmjs.com/package/mongodb)
-
+[NPM MongoDB package](https://www.npmjs.com/package/mongodb)
+[Latest Documentation for NodeJs package](https://github.com/mongodb/node-mongodb-native)
+[Documentation for the pakage](https://docs.mongodb.com/drivers/)
 - `npm install mongodb --save`
 
 The latest npm `"mongodb": "^4.2.0"` package is [compatible](https://docs.mongodb.com/drivers/node/current/compatibility/#mongodb-compatibility) with the MongoDB 5.1 database
 
+Not all commands are supported in NodeJs package driver
+
+[Method Defenitions](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/meteor/mongo.d.ts)
