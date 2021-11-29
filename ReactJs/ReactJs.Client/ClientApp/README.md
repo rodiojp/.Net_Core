@@ -4,7 +4,7 @@
 [How to install](https://recoiljs.org/docs/introduction/installation/)
 - `npm install recoil`
 
-#### Using Recoil
+#### Using Recoil atom state (Example #1)
 
 **counterState.js**
 ```jsx
@@ -78,3 +78,107 @@ export default class App extends Component {
 }
 
 ```
+
+#### Using Recoil atom state (Example #2)
+
+**counterState.js** (atom)
+```jsx
+import { atom } from 'recoil';
+export const counterState = atom({
+    key: 'counterState',
+    default: 0
+});
+```
+
+**incrementByState.js** (atom)
+```jsx
+import { atom } from 'recoil';
+export const incrementByState = atom({
+    key: 'incrementByState',
+    default: 1
+});
+```
+
+
+**CounterButton.js** (useRecoilState)
+```jsx
+import React from 'react';
+import { useRecoilState } from 'recoil'
+import { counterState } from './counterState'
+import { incrementByState } from './incrementByState'
+
+export const CounterButton = () => {
+    const [currentCount, setCurrentCount] = useRecoilState(counterState);
+    const [incrementBy, setIncrementBy] = useRecoilState(incrementByState);
+
+    return (
+        <div class="form-inline">
+            <div class="form-group">
+                <label for="incrementBy" class="col-form-label">Increment By:</label>
+                <input type="number" class="form-control" id="incrementBy"
+                    value={incrementBy}
+                    onChange={e => setIncrementBy(Number(e.target.value))}
+                />
+            </div>
+
+            <button className="btn btn-primary"
+                onClick={() => setCurrentCount(currentCount + incrementBy)}
+            >Increment</button>
+        </div>
+    );
+}
+```
+**CounterDisplay.js** (useRecoilValue)
+```jsx
+import React from 'react';
+import { useRecoilValue } from 'recoil'
+import { counterState } from './counterState'
+
+export const CounterDisplay = () => {
+    const currentCount = useRecoilValue(counterState);
+
+    return (
+        <p aria-live="polite">Current count: <strong>{currentCount}</strong></p>
+    );
+}
+```
+**CounterForm.js**
+```jsx
+import React from 'react';
+import { CounterButton } from '../components/CounterButton';
+import { CounterDisplay } from '../components/CounterDisplay';
+
+export const CounterForm = () => {
+    return (
+        <>
+            <h1>Counter Button</h1>
+            <p>This is a simple example of accessing <strong>Recoil State</strong> inside of <strong>React Functional Component</strong>.</p>
+            <div class="border rounded p-3">
+                <CounterDisplay/>
+                <CounterButton />
+            </div>
+            <div class="border rounded p-3">
+                <CounterDisplay />
+                <CounterButton />
+            </div>
+        </>
+    );
+}
+```
+
+**App.js**
+```jsx
+import { CounterButton } from './pages/CounterButton';
+...
+ <Route path='/counterbutton' component={CounterButton} />
+```
+**NavMenu.js**
+```jsx
+<NavItem>
+    <NavLink tag={Link} className="text-dark" to="/counterbutton">Counter Button</NavLink>
+</NavItem>
+
+```
+
+
+

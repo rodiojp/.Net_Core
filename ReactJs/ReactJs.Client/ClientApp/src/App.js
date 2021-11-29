@@ -7,7 +7,7 @@ import { Counter } from './pages/Counter';
 
 import './custom.css'
 import { RecoilRoot } from 'recoil'
-import { CounterButton } from './pages/CounterButton';
+import { CounterForm } from './pages/CounterForm';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -19,7 +19,7 @@ export default class App extends Component {
                     <Route exact path='/' component={Home} />
                     <Route path='/counter' component={Counter} />
                     <Route path='/fetch-data' component={FetchData} />
-                    <Route path='/counterbutton' component={CounterButton} />
+                    <Route path='/counterform' component={CounterForm} />
                </Layout>
             </RecoilRoot>
         );
