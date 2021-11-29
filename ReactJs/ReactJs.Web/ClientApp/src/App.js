@@ -7,8 +7,8 @@ import { Counter } from './pages/Counter';
 import { NotFoundPage } from './pages/NotFoundPage';
 import Article from './pages/Article';
 import { ArticlesList } from './pages/ArticlesList';
-import { CounterContextProvider } from './components/CounterContextProvider';
-import { CounterButton } from './pages/CounterButton';
+import { ThemeContextProvider } from './components/ThemeContextProvider';
+import { ThemeButton } from './pages/ThemeButton';
 
 import './custom.css'
 
@@ -17,7 +17,7 @@ export default class App extends Component {
 
     render() {
         return (
-            <CounterContextProvider>
+            <ThemeContextProvider>
                 <Router>
                     <Layout>
                         <Switch>
@@ -25,13 +25,13 @@ export default class App extends Component {
                             <Route path='/article/:name' component={Article} />
                             <Route path='/articleslist' component={ArticlesList} />
                             <Route path='/counter' component={Counter} />
-                            <Route path='/counterbutton' component={CounterButton} />
+                            <Route path='/themebutton' component={ThemeButton} />
                             <Route path='/fetch-data' component={FetchData} />
                             <Route component={NotFoundPage} />
                         </Switch>
                     </Layout>
                 </Router>
-            </CounterContextProvider>
+            </ThemeContextProvider>
         );
     }
 }

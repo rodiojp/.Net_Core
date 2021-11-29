@@ -1,6 +1,6 @@
 import React from 'react';
-import { CounterContext, themes } from './CounterContext'
-export class CounterContextProvider extends React.Component {
+import { ThemeContext, themes } from './ThemeContext'
+export class ThemeContextProvider extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -17,7 +17,8 @@ export class CounterContextProvider extends React.Component {
         };
     }
     render() {
-        return <CounterContext.Provider value={this.state.theme}>{this.props.children}</CounterContext.Provider>
+        const value = { theme: this.state.theme, toggleTheme: this.toggleTheme }
+        return <ThemeContext.Provider value={value}>{this.props.children}</ThemeContext.Provider>
     }
 }
 

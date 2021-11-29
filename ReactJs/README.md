@@ -477,3 +477,132 @@ The latest npm `"mongodb": "^4.2.0"` package is [compatible](https://docs.mongod
 Not all commands are supported in NodeJs package driver
 
 [Method Defenitions](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/meteor/mongo.d.ts)
+
+### Dynamic Context
+
+[Theme Button Example](https://reactjs.org/docs/context.html#dynamic-context)
+
+**ThemeContext.js**
+```jsx
+import React from 'react';
+
+export const themes = {
+    light: {
+        foreground: '#000000',
+        background: '#eeeeee',
+    },
+    dark: {
+        foreground: '#ffffff',
+        background: '#222222',
+    }
+};
+
+export const ThemeContext = React.createContext(
+    themes.dark // default value
+);
+
+```
+**ThemeContextProvider.js**
+```jsx
+import React from 'react';
+import { ThemeContext, themes } from './ThemeContext'
+export class ThemeContextProvider extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            theme: themes.light,
+        };
+
+        this.toggleTheme = () => {
+            this.setState(state => ({
+                theme:
+                    state.theme === themes.dark
+                        ? themes.light
+                        : themes.dark,
+            }));
+        };
+    }
+    render() {
+        const value = { theme: this.state.theme, toggleTheme: this.toggleTheme }
+        return <ThemeContext.Provider value={value}>{this.props.children}</ThemeContext.Provider>
+    }
+}
+```
+**App.js**
+```jsx
+...
+import { ThemeContextProvider } from './components/ThemeContextProvider';
+import { ThemeButton } from './pages/ThemeButton';
+
+export default class App extends Component {
+    static displayName = App.name;
+
+    render() {
+        return (
+            <ThemeContextProvider>
+                <Router>
+                    <Layout>
+                        <Switch>
+                            ...
+                            <Route path='/themebutton' component={ThemeButton} />
+                            <Route path='/fetch-data' component={FetchData} />
+                            ...
+                        </Switch>
+                    </Layout>
+                </Router>
+            </ThemeContextProvider>
+        );
+    }
+}
+```
+
+```jsx
+import React, { Component } from 'react';
+import { ThemeContext } from '../components/ThemeContext';
+
+export class ThemeButton extends Component {
+    static displayName = ThemeButton.name;
+
+    constructor(props) {
+        super(props);
+    }
+    componentDidMount() {
+        // let value = this.context;
+        /* perform a side-effect at mount using the value of MyContext */
+    }
+    componentDidUpdate() {
+        // let value = this.context;
+        /* ... */
+    }
+    componentWillUnmount() {
+        let value = this.context;
+        /* ... */
+    }
+
+    // this.context: {
+    //     theme: { foreground: '#000000', background: '#eeeeee' }
+    //     toggleTheme: () => { … }
+    //  }
+    render() {
+        // let props = this.props;
+        let value = this.context;
+        console.log(value);
+        return (
+            <>
+                <h1>Theme Button</h1>
+
+                <p>This is a simple example of accessing Context inside a React component.</p>
+
+                <button className="btn"
+                    style={{ color: value.theme.foreground, backgroundColor: value.theme.background }}
+                    onClick={value.toggleTheme}
+                >Change Color</button>
+            </>
+        );
+    }
+}
+
+ThemeButton.contextType = ThemeContext;
+
+```
+
