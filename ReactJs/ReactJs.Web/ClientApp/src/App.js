@@ -8,7 +8,9 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import Article from './pages/Article';
 import { ArticlesList } from './pages/ArticlesList';
 import { ThemeContextProvider } from './components/ThemeContextProvider';
+import { CounterContextProvider } from './components/CounterContextProvider';
 import { ThemeButton } from './pages/ThemeButton';
+import { CounterButton } from './pages/CounterButton';
 
 import './custom.css'
 
@@ -18,19 +20,22 @@ export default class App extends Component {
     render() {
         return (
             <ThemeContextProvider>
-                <Router>
-                    <Layout>
-                        <Switch>
-                            <Route path='/' component={Home} exact />
-                            <Route path='/article/:name' component={Article} />
-                            <Route path='/articleslist' component={ArticlesList} />
-                            <Route path='/counter' component={Counter} />
-                            <Route path='/themebutton' component={ThemeButton} />
-                            <Route path='/fetch-data' component={FetchData} />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                    </Layout>
-                </Router>
+                <CounterContextProvider>
+                    <Router>
+                        <Layout>
+                            <Switch>
+                                <Route path='/' component={Home} exact />
+                                <Route path='/article/:name' component={Article} />
+                                <Route path='/articleslist' component={ArticlesList} />
+                                <Route path='/counter' component={Counter} />
+                                <Route path='/themebutton' component={ThemeButton} />
+                                <Route path='/counterbutton' component={CounterButton} />
+                                <Route path='/fetch-data' component={FetchData} />
+                                <Route component={NotFoundPage} />
+                            </Switch>
+                        </Layout>
+                    </Router>
+                </CounterContextProvider>
             </ThemeContextProvider>
         );
     }

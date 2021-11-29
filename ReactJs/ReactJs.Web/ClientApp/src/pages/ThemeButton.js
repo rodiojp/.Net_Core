@@ -32,7 +32,7 @@ export class ThemeButton extends Component {
             <>
                 <h1>Theme Button</h1>
 
-                <p>This is a simple example of accessing Context inside a React component.</p>
+                <p>This is a simple example of accessing Context inside a <strong>React Class Component</strong>.</p>
 
                 <button className="btn"
                     style={{ color: value.theme.foreground, backgroundColor: value.theme.background }}
