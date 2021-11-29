@@ -8,8 +8,8 @@ import { NotFoundPage } from './pages/NotFoundPage';
 import Article from './pages/Article';
 import { ArticlesList } from './pages/ArticlesList';
 import { ThemeContextProvider } from './components/ThemeContextProvider';
-import { CounterContextProvider } from './components/CounterContextProvider';
 import { ThemeButton } from './pages/ThemeButton';
+import { CounterContextProvider } from './components/CounterContextProvider';
 import { CounterButton } from './pages/CounterButton';
 
 import './custom.css'

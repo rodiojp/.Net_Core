@@ -615,5 +615,50 @@ export const CounterContextProvider = ({ children }) => {
 		</CounterContext.Provider>
 	)
 }
-}```
+```
+**App.js**
+```jsx
+import { CounterContextProvider } from './components/CounterContextProvider';
+import { CounterButton } from './pages/CounterButton';
+export default class App extends Component {
+    static displayName = App.name;
 
+    render() {
+        return (
+            <ThemeContextProvider>
+                <CounterContextProvider>
+                    <Router>
+                        <Layout>
+                            <Switch>
+                                ...
+                                <Route path='/counterbutton' component={CounterButton} />
+                                ...
+                            </Switch>
+                        </Layout>
+                    </Router>
+                </CounterContextProvider>
+            </ThemeContextProvider>
+        );
+    }
+}
+```
+**CounterButton.js**
+```jsx
+import React, { useContext } from 'react';
+import { CounterContext } from '../components/CounterContext';
+
+export const CounterButton = () => {
+    const { currentCount, incrementCounter } = useContext(CounterContext);
+
+    return (
+        <>
+            <h1>Counter Button</h1>
+            <p>This is a simple example of accessing Context inside a <strong>React Functional Component</strong>.</p>
+            <p aria-live="polite">Current count: <strong>{currentCount}</strong></p>
+            <button className="btn btn-primary"
+                onClick={() => incrementCounter(2)}
+            >Increment</button>
+        </>
+    );
+}
+```
