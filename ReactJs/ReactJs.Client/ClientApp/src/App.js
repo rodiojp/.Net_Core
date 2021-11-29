@@ -6,17 +6,22 @@ import { FetchData } from './pages/FetchData';
 import { Counter } from './pages/Counter';
 
 import './custom.css'
+import { RecoilRoot } from 'recoil'
+import { CounterButton } from './pages/CounterButton';
 
 export default class App extends Component {
-  static displayName = App.name;
+    static displayName = App.name;
 
-  render () {
-    return (
-      <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/fetch-data' component={FetchData} />
-      </Layout>
-    );
-  }
+    render() {
+        return (
+            <RecoilRoot>
+                <Layout>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/counter' component={Counter} />
+                    <Route path='/fetch-data' component={FetchData} />
+                    <Route path='/counterbutton' component={CounterButton} />
+               </Layout>
+            </RecoilRoot>
+        );
+    }
 }

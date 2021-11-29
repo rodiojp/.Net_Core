@@ -1,30 +1,3 @@
-### Recoil
-
-#### Installation
-[How to install](https://recoiljs.org/docs/introduction/installation/)
-- `npm install recoil`
-
-#### Using Recoil
-
-**counterState.js**
-```jsx
-import { atom } from 'recoil';
-export const counterState = atom({
-    key: 'counterState',
-    default: 0
-});
-```
-
-**incrementByState.js**
-```jsx
-import { atom } from 'recoil';
-export const incrementByState = atom({
-    key: 'incrementByState',
-    default: 1
-});
-```
-**CounterButton.js**
-```jsx
 import React, { useContext } from 'react';
 import { useRecoilState } from 'recoil'
 import { counterState } from '../components/counterState'
@@ -55,26 +28,5 @@ export const CounterButton = () => {
         </>
     );
 }
-```
 
-```jsx
-...
-import { RecoilRoot } from 'recoil'
-import { CounterButton } from './pages/CounterButton';
 
-export default class App extends Component {
-    static displayName = App.name;
-
-    render() {
-        return (
-            <RecoilRoot>
-                    ...
-                    <Route path='/counterbutton' component={CounterButton} />
-                    ...
-            </RecoilRoot>
-
-        );
-    }
-}
-
-```
