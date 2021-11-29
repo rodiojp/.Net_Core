@@ -17,7 +17,7 @@ Before you begin, here's a quick FAQ to introduce you to some key concepts:
 
 - **What is NPX**
     
-    It is a Node.js package executer. It is used to execute Node.js packages binaries.
+    It is a package runner tool that comes with npm 5.2+ and higher.
     - `npx some-package`
     - `npx create-react-app my-app`
 
@@ -662,3 +662,8 @@ export const CounterButton = () => {
     );
 }
 ```
+### Recoil
+
+#### Installation
+[How to install](https://recoiljs.org/docs/introduction/installation/)
+- `npm install recoil`
