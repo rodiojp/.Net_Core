@@ -478,7 +478,7 @@ Not all commands are supported in NodeJs package driver
 
 [Method Defenitions](https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/types/meteor/mongo.d.ts)
 
-### Dynamic Context
+### Dynamic Context using React Class Component
 
 [Theme Button Example](https://reactjs.org/docs/context.html#dynamic-context)
 
@@ -545,7 +545,6 @@ export default class App extends Component {
                         <Switch>
                             ...
                             <Route path='/themebutton' component={ThemeButton} />
-                            <Route path='/fetch-data' component={FetchData} />
                             ...
                         </Switch>
                     </Layout>
@@ -555,30 +554,13 @@ export default class App extends Component {
     }
 }
 ```
-
+**ThemeButton.js**
 ```jsx
 import React, { Component } from 'react';
 import { ThemeContext } from '../components/ThemeContext';
 
 export class ThemeButton extends Component {
     static displayName = ThemeButton.name;
-
-    constructor(props) {
-        super(props);
-    }
-    componentDidMount() {
-        // let value = this.context;
-        /* perform a side-effect at mount using the value of MyContext */
-    }
-    componentDidUpdate() {
-        // let value = this.context;
-        /* ... */
-    }
-    componentWillUnmount() {
-        let value = this.context;
-        /* ... */
-    }
-
     // this.context: {
     //     theme: { foreground: '#000000', background: '#eeeeee' }
     //     toggleTheme: () => { … }
@@ -603,6 +585,35 @@ export class ThemeButton extends Component {
 }
 
 ThemeButton.contextType = ThemeContext;
-
 ```
+### Dynamic Context using React Class Component
+
+[Counter Button Example](https://github.com/LinkedInLearning/react-software-architecture-2884265/tree/03_04e/src)
+
+**CounterContext.js**
+```jsx
+import { createContext } from 'react';
+
+export const CounterContext = createContext();
+```
+
+**CounterContextProvider.js**
+```jsx
+import React, { useState } from 'react';
+import { CounterContext } from './CounterContext';
+
+export const CounterContextProvider = ({ children }) => {
+	const [currentCount, setCurrentCount] = useState(0);
+
+	const incrementCounter = incrementBy => {
+		setCurrentCount(currentCount + incrementBy);
+	}
+
+	return (
+		<CounterContext.Provider value={{ currentCount, incrementCounter }}>
+			{children}
+		</CounterContext.Provider>
+	)
+}
+}```
 
