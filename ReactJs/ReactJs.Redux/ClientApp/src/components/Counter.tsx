@@ -15,7 +15,7 @@ class Counter extends React.PureComponent<CounterProps> {
             <React.Fragment>
                 <h1>Counter</h1>
 
-                <p>This is a simple example of a React component.</p>
+                <p>This is a simple example of a React component using TypeScript and Redux.</p>
 
                 <p aria-live="polite">Current count: <strong>{this.props.count}</strong></p>
 
@@ -23,6 +23,11 @@ class Counter extends React.PureComponent<CounterProps> {
                     className="btn btn-primary btn-lg"
                     onClick={() => { this.props.increment(); }}>
                     Increment
+                </button>
+                <button type="button"
+                    className="btn btn-success btn-lg"
+                    onClick={() => { this.props.decrement(); }}>
+                    Decrement
                 </button>
             </React.Fragment>
         );
