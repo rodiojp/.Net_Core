@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Web", "ReactJs.Web\
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "NodeJs.Api", "NodeJs.Api\NodeJs.Api.njsproj", "{3CA848C2-71E3-49D2-A384-273C74CBFF35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Client", "ReactJs.Client\ReactJs.Client.csproj", "{B7FBF079-AE00-4981-8D18-C01F5B087ABD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Client", "ReactJs.Client\ReactJs.Client.csproj", "{B7FBF079-AE00-4981-8D18-C01F5B087ABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Redux", "ReactJs.Redux\ReactJs.Redux.csproj", "{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Viewer", "ReactJs.Viewer\ReactJs.Viewer.csproj", "{E10BBEEC-27F1-448E-96A8-6848CC148A2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{B7FBF079-AE00-4981-8D18-C01F5B087ABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7FBF079-AE00-4981-8D18-C01F5B087ABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7FBF079-AE00-4981-8D18-C01F5B087ABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
