@@ -1,11 +1,11 @@
 ﻿import React from 'react';
 import { useRecoilValue } from 'recoil'
-import { counterState } from './counterState'
+import { counterSelector } from './counterSelector'
 
 export const CounterDisplay = () => {
-    const currentCount = useRecoilValue(counterState);
+    const counter = useRecoilValue(counterSelector);
 
     return (
-        <p aria-live="polite">Current count: <strong>{currentCount}</strong></p>
+        <p aria-live="polite">Current count: <strong>{counter}</strong></p>
     );
 }

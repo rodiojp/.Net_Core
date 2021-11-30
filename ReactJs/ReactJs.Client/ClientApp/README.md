@@ -112,10 +112,10 @@ export const CounterButton = () => {
     const [incrementBy, setIncrementBy] = useRecoilState(incrementByState);
 
     return (
-        <div class="form-inline">
-            <div class="form-group">
-                <label for="incrementBy" class="col-form-label">Increment By:</label>
-                <input type="number" class="form-control" id="incrementBy"
+        <div className="form-inline">
+            <div className="form-group">
+                <label htmlFor="incrementBy" className="col-form-label">Increment By:</label>
+                <input type="number" className="form-control" id="incrementBy"
                     value={incrementBy}
                     onChange={e => setIncrementBy(Number(e.target.value))}
                 />
@@ -153,12 +153,8 @@ export const CounterForm = () => {
         <>
             <h1>Counter Button</h1>
             <p>This is a simple example of accessing <strong>Recoil State</strong> inside of <strong>React Functional Component</strong>.</p>
-            <div class="border rounded p-3">
+            <div className="border rounded p-3">
                 <CounterDisplay/>
-                <CounterButton />
-            </div>
-            <div class="border rounded p-3">
-                <CounterDisplay />
                 <CounterButton />
             </div>
         </>
@@ -180,5 +176,99 @@ import { CounterButton } from './pages/CounterButton';
 
 ```
 
+#### Using Recoil selector state (Example #3)
 
+**counterState.js** (atom)
+```jsx
+import { atom } from 'recoil';
+export const counterState = atom({
+    key: 'counterState',
+    default: [], //A comma is required!
+});
+```
+
+**incrementByState.js** (atom)
+```jsx
+import { atom } from 'recoil';
+export const incrementByState = atom({
+    key: 'incrementByState',
+    default: 1
+});
+```
+
+**counterSelector.js** (selector)
+```jsx
+import { counterState } from './counterState'
+import { selector } from 'recoil';
+export const counterSelector = selector({
+    key: 'counterSelector',
+    get: ({ get }) => {
+        const clicksData = get(counterState);
+        const totalClicks = clicksData.reduce((sum, click) => { return sum + click.amount; }, 0);
+        return totalClicks;
+    },
+});
+```
+
+**CounterButton.js** (useRecoilState)
+```jsx
+import React from 'react';
+import { useRecoilState } from 'recoil'
+import { counterState } from './counterState'
+import { incrementByState } from './incrementByState'
+
+export const CounterButton = () => {
+    const [clicksData, setClicksData] = useRecoilState(counterState);
+    const [incrementBy, setIncrementBy] = useRecoilState(incrementByState);
+
+    return (
+        <div className="form-inline">
+            <div className="form-group">
+                <label htmlFor="incrementBy" className="col-form-label">Increment By:</label>
+                <input type="number" className="form-control" id="incrementBy"
+                    value={incrementBy}
+                    onChange={e => setIncrementBy(Number(e.target.value))}
+                />
+            </div>
+
+            <button className="btn btn-primary"
+                onClick={() => setClicksData([...clicksData, { timestamp: Date.now(), amount: incrementBy }])}
+            >Increment</button>
+        </div>
+    );
+}
+```
+**CounterDisplay.js** (useRecoilValue)
+```jsx
+import React from 'react';
+import { useRecoilValue } from 'recoil'
+import { counterSelector } from './counterSelector'
+
+export const CounterDisplay = () => {
+    const counter = useRecoilValue(counterSelector);
+
+    return (
+        <p aria-live="polite">Current count: <strong>{counter}</strong></p>
+    );
+}
+```
+**CounterForm.js**
+```jsx
+import React from 'react';
+import { CounterButton } from '../components/CounterButton';
+import { CounterDisplay } from '../components/CounterDisplay';
+
+export const CounterForm = () => {
+    return (
+        <>
+            <h1>Counter Button</h1>
+            <p>This is a simple example of accessing <strong>Recoil State</strong> inside of <strong>React Functional Component</strong>.</p>
+            <div className="border rounded p-3">
+                <CounterDisplay/>
+                <CounterButton />
+            </div>
+        </>
+    );
+}
+```
 

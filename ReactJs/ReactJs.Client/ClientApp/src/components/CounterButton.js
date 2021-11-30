@@ -4,21 +4,21 @@ import { counterState } from './counterState'
 import { incrementByState } from './incrementByState'
 
 export const CounterButton = () => {
-    const [currentCount, setCurrentCount] = useRecoilState(counterState);
+    const [clicksData, setClicksData] = useRecoilState(counterState);
     const [incrementBy, setIncrementBy] = useRecoilState(incrementByState);
 
     return (
-        <div class="form-inline">
-            <div class="form-group">
-                <label for="incrementBy" class="col-form-label">Increment By:</label>
-                <input type="number" class="form-control" id="incrementBy"
+        <div className="form-inline">
+            <div className="form-group">
+                <label htmlFor="incrementBy" className="col-form-label">Increment By:</label>
+                <input type="number" className="form-control" id="incrementBy"
                     value={incrementBy}
                     onChange={e => setIncrementBy(Number(e.target.value))}
                 />
             </div>
 
             <button className="btn btn-primary"
-                onClick={() => setCurrentCount(currentCount + incrementBy)}
+                onClick={() => setClicksData([...clicksData, { timestamp: Date.now(), amount: incrementBy }])}
             >Increment</button>
         </div>
     );

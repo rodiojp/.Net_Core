@@ -7,12 +7,8 @@ export const CounterForm = () => {
         <>
             <h1>Counter Button</h1>
             <p>This is a simple example of accessing <strong>Recoil State</strong> inside of <strong>React Functional Component</strong>.</p>
-            <div class="border rounded p-3">
+            <div className="border rounded p-3">
                 <CounterDisplay/>
-                <CounterButton />
-            </div>
-            <div class="border rounded p-3">
-                <CounterDisplay />
                 <CounterButton />
             </div>
         </>
