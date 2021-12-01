@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Redux", "ReactJs.Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Viewer", "ReactJs.Viewer\ReactJs.Viewer.csproj", "{E10BBEEC-27F1-448E-96A8-6848CC148A2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Mobx", "ReactJs.Mobx\ReactJs.Mobx.csproj", "{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E10BBEEC-27F1-448E-96A8-6848CC148A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
