@@ -9,11 +9,13 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "NodeJs.Api", "NodeJs.Api\No
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Client", "ReactJs.Client\ReactJs.Client.csproj", "{B7FBF079-AE00-4981-8D18-C01F5B087ABD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Redux", "ReactJs.Redux\ReactJs.Redux.csproj", "{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Redux", "ReactJs.Redux\ReactJs.Redux.csproj", "{C2C118F3-82E3-49B4-AB0F-86428CE5ADBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Viewer", "ReactJs.Viewer\ReactJs.Viewer.csproj", "{E10BBEEC-27F1-448E-96A8-6848CC148A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Viewer", "ReactJs.Viewer\ReactJs.Viewer.csproj", "{E10BBEEC-27F1-448E-96A8-6848CC148A2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Mobx", "ReactJs.Mobx\ReactJs.Mobx.csproj", "{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReactJs.Mobx", "ReactJs.Mobx\ReactJs.Mobx.csproj", "{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReactJs.Split", "ReactJs.Split\ReactJs.Split.csproj", "{99393D97-22F2-4F94-9647-C95EF10297D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE3260C5-DCC9-4755-A2FC-5F4A4EFF9E6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99393D97-22F2-4F94-9647-C95EF10297D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99393D97-22F2-4F94-9647-C95EF10297D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99393D97-22F2-4F94-9647-C95EF10297D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99393D97-22F2-4F94-9647-C95EF10297D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
