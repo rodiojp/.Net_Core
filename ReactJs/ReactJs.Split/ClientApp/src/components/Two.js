@@ -7,3 +7,5 @@ export const Two = () => {
         </div>
     );
 };
+
+export default Two;

@@ -7,3 +7,5 @@ export const One = () => {
         </div>
     );
 };
+
+export default One;
