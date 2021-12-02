@@ -662,3 +662,14 @@ export const CounterButton = () => {
     );
 }
 ```
+### Build & Run the static site                         
+[Run the static site](https://www.npmjs.com/package/serve)
+- `npm install -g serve`
+
+Run production build:
+
+- `npm run build`
+
+The `build` folder is ready to be deployed. You may serve it with a static server:
+
+ - `serve -s build`
